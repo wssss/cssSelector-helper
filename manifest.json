@@ -1,0 +1,32 @@
+{
+    "author":"weis",
+    "manifest_version":2,
+    "name":"product css selector",
+    "description":"A css selector for Eric",
+    "version":"0.1",
+    "browser_action":{
+        "default_icon":{
+            "16":"icons/icon16.png",
+            "48":"icons/icon48.png",
+            "128":"icons/icon128.png"
+        },
+        "default_title":"product css selector helper"
+    },
+    "permissions":["activeTab","clipboardRead"],
+    "content_scripts":[
+        {
+            "css":["css/content.css"],
+            "js":["js/cssPath.js", "js/content.js"],
+            "matches":["*://*/*"]
+        }
+    ],
+    "background":{
+        "page":"background.html"
+    },
+    "icons":{
+        "16":"icons/icon16.png",
+        "48":"icons/icon48.png",
+        "128":"icons/icon128.png"
+    },
+    "web_accessible_resources":["bar.html","css/bootstrap.min.css", "css/bar.css", "js/background.js"]
+}

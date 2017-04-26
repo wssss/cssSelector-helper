@@ -1,0 +1,28 @@
+#ch-bar{
+  border-width: 0;
+  position: fixed;
+  padding: 10px;
+  margin: 2px;
+  top: 0;
+  right: 0;
+  width: 360px;
+  height: 100%;  /* bar.css body height */
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  z-index: 2147483647;
+  background-color: white;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.2s ease-out;
+}
+
+#ch-bar.hidden{
+    transform: translate3d(100%, 0, 0);
+}
+
+.ch-highlight{
+    background-color: #fff59d !important;
+}
+
+img.ch-highlight{
+    opacity: 0.5 !important;
+}
