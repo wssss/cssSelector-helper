@@ -1,5 +1,7 @@
 # cssSelector-helper
-cssSelector helper
+an chrome extension 
+
+cssPath use copy css selector 
 
 one cssSelector
 
