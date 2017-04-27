@@ -5,3 +5,10 @@
     width: 323px;
     margin-right: 0;
 }
+.input-hight{
+    border: 1px solid #5a98de;
+}
+
+.form-sel{
+    margin: 5px 0 10px;
+}

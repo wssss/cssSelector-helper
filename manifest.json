@@ -28,5 +28,5 @@
         "48":"icons/icon48.png",
         "128":"icons/icon128.png"
     },
-    "web_accessible_resources":["bar.html","css/bootstrap.min.css", "css/bar.css", "js/background.js"]
+    "web_accessible_resources":["bar.html","css/bootstrap.min.css", "css/bar.css", "js/background.js","http://mm.geekfinancer.com/"]
 }
