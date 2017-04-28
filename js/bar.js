@@ -5,41 +5,11 @@ var TAB_KEYCODE = 8;
 var cur_index = 0;
 
 
-var ajax = function(data){
-    //data={data:"",datatype:"xml/json",type:"get/post",url:"",asyn:"true/false",success:function(){},failure:function(){}}
-    var xhr = new XMLHttpRequest;
-
-    var type = data.type ==='get' ? 'get' : 'post';
-    var url = '';
-    var flag = data.asyn == 'true' ? 'true' :'false';
-
-    xhr.open(type, url, flag);
-    if(type == 'get'){
-        xhr.send(null);
-    }else if (type=='opst') {
-        xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xhr.send(data.data)
-    }
-
-    xhr.onreadystatechange = function(){
-        if(this.readyState == 4){
-            if(this.status === 200){
-                if(typeof data.success == 'function'){
-                    var data = data.dataType == 'xml' ? xhr.responseXML : xhr.responseText;
-                    data.success(d);
-                }else {
-                    if(typeof data.failure == 'function'){
-                        data.failure();
-                    }
-                }
-            }
-        }
-    }
-}
-
 var nodeList = document.querySelectorAll('input.form-control');
 var tabList = document.querySelectorAll('input.btn');
-var submitEl = document.querySelector('button.btn')
+var submitEl = document.querySelector('button.btn');
+var selectEl = document.querySelector('.form-sel');
+var listEl = document.querySelector('.input-list');
 
 function clearBoder(){
     var els = document.querySelectorAll('.input-hight');
@@ -47,6 +17,16 @@ function clearBoder(){
         els[i].classList.remove('input-hight');
     }
 }
+
+chrome.runtime.sendMessage({
+    method: 'GET',
+    action: 'xhttp',
+    url: 'http://mm.geekfinancer.com/api/entities/companies/?limit=3',
+    data: 'q=something'
+}, function(responseText) {
+    alert(responseText);
+    /*Callback function to deal with the response*/
+});
 
 Array.prototype.forEach.call(nodeList,function(el,index){
     el.onfocus = (function(index) {
