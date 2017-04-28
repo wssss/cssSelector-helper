@@ -97,6 +97,12 @@ ch.Bar.prototype.handleRequest_ = function(request, sender, cb){
         window.focus();
     }else if (request.type === "toggleBar") {
         this.toggleBar_();
+    }else if(request.type ==="getHost"){
+        var hostName = window.location.host;
+        chrome.runtime.sendMessage({
+            host:'host',
+            name:hostName
+        })
     }
 }
 
@@ -107,7 +113,7 @@ ch.Bar.prototype.mouseMove_ = function(e){
     this.currEl_ = e.toElement;
     if (!e.shiftKey && e.ctrlKey) {
         //this.updateQueryAndBar_(this.currEl_);
-        return 
+        return
     }
 }
 
