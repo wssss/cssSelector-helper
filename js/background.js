@@ -9,6 +9,7 @@ chrome.browserAction.onClicked.addListener(function(tab){
     chrome.tabs.sendMessage(tab.id, {type:'toggleBar'})
 })
 
+//由于在https的通讯协议下，iframe和ajax是无法使用http协议的，所以要在background.js下中专请求。。
 chrome.runtime.onMessage.addListener(function(request, sender, callback){
     if(request.action == 'xhttp'){
         var xhttp = new XMLHttpRequest();
@@ -18,7 +19,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback){
             callback(xhttp.responseText);
         };
         xhttp.onerror = function(){
-            callback();
+            alert('发送错误。')
         }
         xhttp.open(method, request.url, true);
         if(method == 'POST'){

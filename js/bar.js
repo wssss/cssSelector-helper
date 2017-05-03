@@ -31,7 +31,7 @@ var jsonattr = {
 }
 var choices = {0:'集合信托', 1:"集合资管",2:"债权基金",3:"证券基金"}
 
-function innerOptions(){
+function innerOptions(choices){
     var allOptions = '';
     for(var key in choices){
         var inOption = '<option value=' + key + '>' + choices[key] + '</option>'
@@ -40,7 +40,7 @@ function innerOptions(){
     selectEl.innerHTML = allOptions;
 }
 
-function innerAttrs(){
+function innerAttrs(jsonattr){
     var allInput = ''
     for(var key in jsonattr){
         var inhtml = '<div class="form-group">\
@@ -66,6 +66,7 @@ var handleHost = function(request, sender, cb){
             action:'xhttp',
             url:'http://mm.geekfinancer.com/api/entities/companies/?limit=3host=' + request.hostName
         },function(responseText){
+            innerOptions(responseText);
             getProductAttrs(responseText[0]);
         })
     }
@@ -79,8 +80,7 @@ function getProductAttrs(product_type){
         action:'xhttp',
         url:url
     }, function(responseText){
-        innerAttrs();
-        innerOptions();
+        innerAttrs(responseText);
     })
 }
 
@@ -114,6 +114,7 @@ function inputInit(){
     chrome.runtime.onMessage.addListener(handleRequest)
 }
 
+//提交
 submitEl.onclick = function(){
     var formInput = jsonattr;
     var i = 0;
@@ -129,7 +130,7 @@ submitEl.onclick = function(){
         url: 'http://mm.geekfinancer.com/api/entities/companies/?limit=3',
         data: formInput
     }, function(responseText) {
-        console.log('data send OK!');
+        alert('提交成功！')
     });
 }
 
@@ -144,4 +145,5 @@ var handleKeyDown = function(e){
 
 document.addEventListener('keydown', handleKeyDown);
 
+//host 地址只能在content.js获取，获取后并发送到bar.js。
 chrome.runtime.sendMessage({type:'getHost'});
