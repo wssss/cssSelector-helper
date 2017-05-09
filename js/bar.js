@@ -1,10 +1,12 @@
-
 'use strict';
+
 var Z_KEYCODE = 90;
 var TAB_KEYCODE = 8;
 var cur_index = 0;
 var host_name = "";
-var jsonAttrs = {};
+var responseObj = {}
+var resList = [];
+var domain = "http://192.168.1.254:8000/"
 
 var nodeList;
 var submitEl = document.querySelector('button.btn');
@@ -18,34 +20,22 @@ function clearBoder(){
     }
 }
 
-var jsonattr = {
-    name : {name:"产品名称",value:"div#product-detail-container span.fl.lagerTitle"},
-    alias : {name:"产品简称",value:"div#product-detail-container a.toptitle.c-f36e27"},
-    min_amount : {name:"最小认购金额(含)(万)",value:""},
-    deadline :{name:"期限月",value:""},
-    deadline_introduction : {name:"期限说明",value:""},
-    update_notification : {name:"更新说明",value:""},
-    type :{name:"发行通道",value:""},
-    field : {name:"投资领域",value:""},
-    start_date : {name:"开始募集时间",value:""}
-}
-var choices = {0:'集合信托', 1:"集合资管",2:"债权基金",3:"证券基金"}
-
 function innerOptions(choices){
     var allOptions = '';
-    for(var key in choices){
-        var inOption = '<option value=' + key + '>' + choices[key] + '</option>'
+    for(var i = 0; i < choices.length; i++){
+        var inOption = '<option value=' + choices[i] + '>' + choices[i] + '</option>'
         allOptions = allOptions + inOption;
     }
     selectEl.innerHTML = allOptions;
 }
 
-function innerAttrs(jsonattr){
+function innerAttrs(list){
+    console.log(list);
     var allInput = ''
-    for(var key in jsonattr){
+    for(var i = 0; i < list.length; i ++){
         var inhtml = '<div class="form-group">\
-        <label for="inputEmail3" class="col-sm-2 control-label">' + jsonattr[key].name +'</label>\
-        <div class="col-sm-10"><input type="text" class="form-control" value=' + jsonattr[key].value + '>\
+        <label for="inputEmail3" class="col-sm-2 control-label">' + list[i].verbose_name +'</label>\
+        <div class="col-sm-10"><input type="text" class="form-control" value=' + list[i].selector + '>\
         </div></div>';
         allInput = allInput + inhtml;
     }
@@ -60,27 +50,30 @@ selectEl.addEventListener('change',function(e){
 //初始化页面数据,接受host，并且请求product_type
 var handleHost = function(request, sender, cb){
     if(request.host == 'host'){
-        host_name = request.hostName;
+        host_name = request.name.replace('www.','');
         chrome.runtime.sendMessage({
             method:'GET',
             action:'xhttp',
-            url:'http://mm.geekfinancer.com/api/entities/companies/?limit=3host=' + request.hostName
+            url:domain + 'admin/api/parser/product-selectors/' + host_name + '/'
         },function(responseText){
-            innerOptions(responseText);
-            getProductAttrs(responseText[0]);
+            responseObj = JSON.parse(responseText)
+            innerOptions(responseObj.value);
+            console.log(responseObj.value);
+            getProductAttrs(responseObj.value[3]);
         })
     }
 }
 
 function getProductAttrs(product_type){
-    var url = 'http://mm.geekfinancer.com/api/entities/companies/';
-    //var url = "http://mm.geekfinancer.com/api/parser/selectors/?host=" +　host_name + "&product_type=" + product_type;
+    var url = domain + "admin/api/parser/product-selectors/" +　host_name + "/?product_type=" + encodeURI(product_type);
     chrome.runtime.sendMessage({
         method:'GET',
         action:'xhttp',
         url:url
     }, function(responseText){
-        innerAttrs(responseText);
+        var response = JSON.parse(responseText)
+        resList = response.results;
+        innerAttrs(response.results);
     })
 }
 
@@ -116,19 +109,17 @@ function inputInit(){
 
 //提交
 submitEl.onclick = function(){
-    var formInput = jsonattr;
-    var i = 0;
-    console.log(nodeList);
-    for(var key in formInput){
-        formInput[key].value = nodeList[i].value
-        i ++;
+    var formInput = resList;
+    for(var i = 0;i < formInput.length; i ++){
+        formInput[i].selector = nodeList[i].value
     }
-
+    var data = JSON.stringify({results:formInput})
+    var url = domain + "admin/api/parser/product-selectors/" +　host_name + "/batch/";
     chrome.runtime.sendMessage({
         method: 'POST',
         action: 'xhttp',
-        url: 'http://mm.geekfinancer.com/api/entities/companies/?limit=3',
-        data: formInput
+        url: url,
+        data: data
     }, function(responseText) {
         alert('提交成功！')
     });
