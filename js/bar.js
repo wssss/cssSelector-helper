@@ -59,7 +59,7 @@ var handleHost = function(request, sender, cb){
             responseObj = JSON.parse(responseText)
             innerOptions(responseObj.value);
             console.log(responseObj.value);
-            getProductAttrs(responseObj.value[3]);
+            getProductAttrs(responseObj.value[0]);
         })
     }
 }
