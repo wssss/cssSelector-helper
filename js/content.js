@@ -98,10 +98,9 @@ ch.Bar.prototype.handleRequest_ = function(request, sender, cb){
     }else if (request.type === "toggleBar") {
         this.toggleBar_();
     }else if(request.type ==="getHost"){
-        var hostName = window.location.host;
         chrome.runtime.sendMessage({
-            host:'host',
-            name:hostName
+            type:'host',
+            name: window.location.host
         })
     }
 }

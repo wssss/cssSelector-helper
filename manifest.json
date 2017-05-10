@@ -12,12 +12,12 @@
         },
         "default_title":"product css selector helper"
     },
-    "permissions":["activeTab","clipboardRead", "http://mm.geekfinancer.com/*","http://192.168.1.254:8000/*"],
+    "permissions":["activeTab","clipboardRead", "http://mm.geekfinancer.com/*","http://192.168.1.254:8000/*","cookies","webRequest"],
     "content_scripts":[
         {
+            "matches":[ "\u003Call_urls>" ],
             "css":["css/content.css"],
             "js":["js/cssPath.js", "js/content.js"],
-            "matches":[ "\u003Call_urls>" ],
             "all_frames": true
         }
     ],

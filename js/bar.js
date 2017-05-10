@@ -13,6 +13,7 @@ var submitEl = document.querySelector('button.btn');
 var selectEl = document.querySelector('.form-sel');
 var listEl = document.querySelector('.input-list');
 
+
 function clearBoder(){
     var els = document.querySelectorAll('.input-hight');
     for(var i = 0; i < els.length; i++){
@@ -49,7 +50,7 @@ selectEl.addEventListener('change',function(e){
 
 //初始化页面数据,接受host，并且请求product_type
 var handleHost = function(request, sender, cb){
-    if(request.host == 'host'){
+    if(request.type == 'host'){
         host_name = request.name.replace('www.','');
         chrome.runtime.sendMessage({
             method:'GET',
@@ -57,6 +58,7 @@ var handleHost = function(request, sender, cb){
             url:domain + 'admin/api/parser/product-selectors/' + host_name + '/'
         },function(responseText){
             responseObj = JSON.parse(responseText)
+
             innerOptions(responseObj.value);
             getProductAttrs(responseObj.value[0]);
         })
@@ -88,6 +90,7 @@ var handleRequest = function(request, sender, cb){
         nodeList[cur_index].classList.add('input-hight')
         nodeList[pre_index].classList.remove('input-hight')
         cur_index ++
+        return true;
     }
 }
 
