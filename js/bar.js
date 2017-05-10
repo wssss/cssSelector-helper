@@ -8,7 +8,7 @@ var responseObj = {}
 var resList = [];
 var domain = "http://192.168.1.254:8000/"
 
-var nodeList;
+var nodeList = []
 var submitEl = document.querySelector('button.btn');
 var selectEl = document.querySelector('.form-sel');
 var listEl = document.querySelector('.input-list');
@@ -30,7 +30,6 @@ function innerOptions(choices){
 }
 
 function innerAttrs(list){
-    console.log(list);
     var allInput = ''
     for(var i = 0; i < list.length; i ++){
         var inhtml = '<div class="form-group">\
@@ -44,6 +43,7 @@ function innerAttrs(list){
 }
 
 selectEl.addEventListener('change',function(e){
+    cur_index = 0;
     getProductAttrs(this.options[this.selectedIndex].text);
 })
 
@@ -58,7 +58,6 @@ var handleHost = function(request, sender, cb){
         },function(responseText){
             responseObj = JSON.parse(responseText)
             innerOptions(responseObj.value);
-            console.log(responseObj.value);
             getProductAttrs(responseObj.value[0]);
         })
     }
@@ -79,6 +78,19 @@ function getProductAttrs(product_type){
 
 chrome.runtime.onMessage.addListener(handleHost);
 
+var handleRequest = function(request, sender, cb){
+    if(cur_index >= nodeList.length) return;
+    if(request.type === 'update'){
+        var pre_index = cur_index == 0 ? 0 :cur_index -1;
+        nodeList[cur_index].value = request.cssSelector;
+        console.log(cur_index);
+        console.log(nodeList[cur_index]);
+        nodeList[cur_index].classList.add('input-hight')
+        nodeList[pre_index].classList.remove('input-hight')
+        cur_index ++
+    }
+}
+
 function inputInit(){
     nodeList = document.querySelectorAll('input.form-control');
 
@@ -93,20 +105,9 @@ function inputInit(){
         })(index);
     })
 
-    var handleRequest = function(request, sender, cb){
-        if(cur_index >= nodeList.length) return;
-        if(request.type === 'update'){
-            var pre_index = cur_index == 0 ? 0 :cur_index -1;
-            nodeList[cur_index].value = request.cssSelector;
-            nodeList[cur_index].classList.add('input-hight')
-            nodeList[pre_index].classList.remove('input-hight')
-            cur_index ++
-        }
-    }
-
-    chrome.runtime.onMessage.addListener(handleRequest)
 }
 
+chrome.runtime.onMessage.addListener(handleRequest)
 //提交
 submitEl.onclick = function(){
     var formInput = resList;

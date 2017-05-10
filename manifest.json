@@ -17,7 +17,8 @@
         {
             "css":["css/content.css"],
             "js":["js/cssPath.js", "js/content.js"],
-            "matches":["*://*/*"]
+            "matches":[ "\u003Call_urls>" ],
+            "all_frames": true
         }
     ],
     "background":{
@@ -28,5 +29,5 @@
         "48":"icons/icon48.png",
         "128":"icons/icon128.png"
     },
-    "web_accessible_resources":["bar.html","css/bootstrap.min.css", "css/bar.css", "js/background.js"]
+    "web_accessible_resources":["bar.html","js/bar.js","css/bootstrap.min.css", "css/bar.css", "js/background.js"]
 }
