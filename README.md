@@ -5,6 +5,6 @@ cssPath use copy css selector
 
 one cssSelector
 
-help developers to write clalwers
+help developers to write crawler
 
 welcome star and pr.
