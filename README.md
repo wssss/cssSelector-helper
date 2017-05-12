@@ -1,5 +1,6 @@
 # cssSelector-helper
-an chrome extension 
+
+### a chrome extension 
 
 cssPath use copy css selector 
 
@@ -9,7 +10,7 @@ help developers to write crawler
 
 welcome star and pr.
 
-GUIDE：
+### quick start;
 
 chrome://extensions/
 
