@@ -12,13 +12,13 @@
         },
         "default_title":"product css selector helper"
     },
-    "permissions":["activeTab","clipboardRead", "http://mm.geekfinancer.com/*","http://192.168.1.254:8000/*","cookies","webRequest"],
+    "permissions":["activeTab","clipboardRead", "http://mm.geekfinancer.com/*","http://127.0.0.1:8000/*","http://192.168.1.254:8000/*","cookies","webRequest"],
     "content_scripts":[
         {
             "matches":[ "\u003Call_urls>" ],
             "css":["css/content.css"],
             "js":["js/cssPath.js", "js/content.js"],
-            "all_frames": true
+            "run_at": "document_end"
         }
     ],
     "background":{
@@ -29,5 +29,5 @@
         "48":"icons/icon48.png",
         "128":"icons/icon128.png"
     },
-    "web_accessible_resources":["bar.html","js/bar.js","css/bootstrap.min.css", "css/bar.css", "js/background.js"]
+    "web_accessible_resources":["bar.html","css/bootstrap.min.css", "css/bar.css", "js/background.js"]
 }

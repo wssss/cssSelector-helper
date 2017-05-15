@@ -6,7 +6,7 @@ var cur_index = 0;
 var host_name = "";
 var responseObj = {}
 var resList = [];
-var domain = "http://192.168.1.254:8000/"
+var domain = "http://127.0.0.1:8000/"
 
 var nodeList = []
 var submitEl = document.querySelector('button.btn');
@@ -49,21 +49,6 @@ selectEl.addEventListener('change',function(e){
 })
 
 //初始化页面数据,接受host，并且请求product_type
-var handleHost = function(request, sender, cb){
-    if(request.type == 'host'){
-        host_name = request.name.replace('www.','');
-        chrome.runtime.sendMessage({
-            method:'GET',
-            action:'xhttp',
-            url:domain + 'admin/api/parser/product-selectors/' + host_name + '/'
-        },function(responseText){
-            responseObj = JSON.parse(responseText)
-
-            innerOptions(responseObj.value);
-            getProductAttrs(responseObj.value[0]);
-        })
-    }
-}
 
 function getProductAttrs(product_type){
     var url = domain + "admin/api/parser/product-selectors/" +　host_name + "/?product_type=" + encodeURI(product_type);
@@ -78,21 +63,30 @@ function getProductAttrs(product_type){
     })
 }
 
-chrome.runtime.onMessage.addListener(handleHost);
-
-var handleRequest = function(request, sender, cb){
-    if(cur_index >= nodeList.length) return;
+var handleReq = function(request, sender, cb){
     if(request.type === 'update'){
+        if(cur_index >= nodeList.length) return;
         var pre_index = cur_index == 0 ? 0 :cur_index -1;
         nodeList[cur_index].value = request.cssSelector;
-        console.log(cur_index);
-        console.log(nodeList[cur_index]);
         nodeList[cur_index].classList.add('input-hight')
         nodeList[pre_index].classList.remove('input-hight')
         cur_index ++
         return true;
+    }else if(request.type == 'host'){
+        host_name = request.name.replace('www.','');
+        chrome.runtime.sendMessage({
+            method:'GET',
+            action:'xhttp',
+            url:domain + 'admin/api/parser/product-selectors/' + host_name + '/'
+        },function(responseText){
+            responseObj = JSON.parse(responseText)
+            innerOptions(responseObj.value);
+            getProductAttrs(responseObj.value[0]);
+        })
+        return true
     }
 }
+chrome.runtime.onMessage.addListener(handleReq)
 
 function inputInit(){
     nodeList = document.querySelectorAll('input.form-control');
@@ -107,10 +101,8 @@ function inputInit(){
             }
         })(index);
     })
-
 }
 
-chrome.runtime.onMessage.addListener(handleRequest)
 //提交
 submitEl.onclick = function(){
     var formInput = resList;

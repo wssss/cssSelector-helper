@@ -22,17 +22,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback){
         var method = request.method ? request.method.toUpperCase() : 'GET';
 
         xhttp.onload = function(){
-            var cookie = getCookie('csrftoken')
-            if(!cookie){
-                var token = xhttp.getResponseHeader('X-CSRFToken')
-                document.cookie="csrftoken=" + token;
+            if(xhttp.status == 200){
+                var cookie = getCookie('csrftoken')
+                if(!cookie){
+                    var token = xhttp.getResponseHeader('X-CSRFToken')
+                    document.cookie="csrftoken=" + token;
+                }
+                callback(xhttp.responseText);
+            }else {
+                alert('发送错误，错误代码' + xhttp.status)
             }
-            callback(xhttp.responseText);
         };
         xhttp.onerror = function(){
             alert('发送错误。')
         }
-        xhttp.open(method, request.url, true);
+        xhttp.open(method, request.url, false);
         if(method == 'POST'){
             var csrf = getCookie('csrftoken')
             xhttp.setRequestHeader("X-CSRFToken", csrf);
