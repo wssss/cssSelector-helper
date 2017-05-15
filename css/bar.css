@@ -12,3 +12,9 @@
 .form-sel{
     margin: 5px 0 10px;
 }
+button.btn{
+    position: fixed;
+    bottom: 30px;
+    right: 22px;
+    background-color: #ccc;
+}

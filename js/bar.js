@@ -7,7 +7,7 @@ var host_name = "";
 var responseObj = {}
 var resList = [];
 var domain = "http://127.0.0.1:8000/"
-var cssSel = ""
+var cssSel = "";
 
 var nodeList = []
 var submitEl = document.querySelector('button.btn');
@@ -35,8 +35,8 @@ function innerAttrs(list){
     var allInput = ''
     for(var i = 0; i < list.length; i ++){
         var inhtml = '<div class="form-group">\
-        <label for="inputEmail3" class="col-sm-2 control-label">' + list[i].verbose_name +'</label>\
-        <div class="col-sm-10"><input type="text" class="form-control" value=' + list[i].selector + '>\
+        <label class="col-sm-2 control-label">' + list[i].verbose_name +'</label>\
+        <div class="col-sm-10"><input type="text" class="form-control" value="'+ list[i].selector + '"/>\
         </div></div>';
         allInput = allInput + inhtml;
     }
@@ -107,7 +107,11 @@ function inputInit(){
 submitEl.onclick = function(){
     var formInput = resList;
     for(var i = 0;i < formInput.length; i ++){
-        formInput[i].selector = nodeList[i].value
+        if(nodeList[i].value == "null"){
+            formInput[i].selector = null
+        }else {
+            formInput[i].selector = nodeList[i].value
+        }
     }
     var data = JSON.stringify({results:formInput})
     var url = domain + "admin/api/parser/product-selectors/" +　host_name + "/batch/";
