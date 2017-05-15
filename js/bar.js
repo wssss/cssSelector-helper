@@ -7,6 +7,7 @@ var host_name = "";
 var responseObj = {}
 var resList = [];
 var domain = "http://127.0.0.1:8000/"
+var cssSel = ""
 
 var nodeList = []
 var submitEl = document.querySelector('button.btn');
@@ -65,13 +66,13 @@ function getProductAttrs(product_type){
 
 var handleReq = function(request, sender, cb){
     if(request.type === 'update'){
-        if(cur_index >= nodeList.length) return;
+        if(cur_index >= nodeList.length || cssSel == request.cssSelector) return;
+        cssSel = request.cssSelector
         var pre_index = cur_index == 0 ? 0 :cur_index -1;
         nodeList[cur_index].value = request.cssSelector;
         nodeList[cur_index].classList.add('input-hight')
         nodeList[pre_index].classList.remove('input-hight')
         cur_index ++
-        return true;
     }else if(request.type == 'host'){
         host_name = request.name.replace('www.','');
         chrome.runtime.sendMessage({
@@ -83,7 +84,6 @@ var handleReq = function(request, sender, cb){
             innerOptions(responseObj.value);
             getProductAttrs(responseObj.value[0]);
         })
-        return true
     }
 }
 chrome.runtime.onMessage.addListener(handleReq)
