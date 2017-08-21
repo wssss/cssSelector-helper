@@ -14,8 +14,8 @@
 
 chrome://extensions/
 
-1.打开开发者模式。
+1. 打开开发者模式。
 
-2.点击 load unpacked extension。
+2. 点击 load unpacked extension。
 
-3.选中我们的项目。
+3. 选中我们的项目。
