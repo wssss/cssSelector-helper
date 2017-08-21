@@ -8,14 +8,14 @@
 
 2. 鼠标指向你想选取的css selector元素。
 
-3.按下ctrl键。
+3. 按下ctrl键。
 
 ### quick start;
 
 chrome://extensions/
 
-1.open developer mode,
+1.打开开发者模式。
 
-2.click load unpacked extension 
+2.点击 load unpacked extension。
 
-3.select the project
+3.选中我们的项目。
