@@ -2,7 +2,7 @@
 
 ### a chrome extension 
 
-cssPath use copy css selector (https://github.com/flamencist/CopyCssSelector)
+
 
 one cssSelector
 
