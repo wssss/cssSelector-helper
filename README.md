@@ -1,14 +1,14 @@
 # cssSelector-helper
 
-### a chrome extension 
+### 一个chrome插件，快速获取元素的css selector。
 
+![image](https://github.com/wssss/cssSelector-helper/blob/master/img/selector.jpg)
 
+1. 首先页面获取焦点。
 
-one cssSelector
+2. 鼠标指向你想选取的css selector元素。
 
-help developers to write crawler
-
-welcome star and pr.
+3.按下ctrl键。
 
 ### quick start;
 
