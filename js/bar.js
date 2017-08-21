@@ -1,24 +1,15 @@
 'use strict';
 
-window.document.onload = function(){
+window.onload = function(){
     var bar = bar || {};
-    
-    bar.Z_KEYCODE = 90;
-    
-    bar.cur_index = 0;
-    bar.host_name = "";
-    bar.responseObj = {}
-    bar.resList = [];
-    bar.domain = "http://127.0.0.1:8000/"
+
     bar.cssSel = "";
-    
-    bar.nodeList = []
+
     
     bar.form = function(){
-        this.submitEl = document.querySelector('button.btn');
-        this.selectEl = document.querySelector('.form-sel');
-        this.listEl = document.querySelector('.input-list');
+        this.area = document.querySelector('.selector-area');
     }
+    
     
     // bar.form.prototype.clearBoder = function(){
     //     var els = document.querySelectorAll('.input-hight');
@@ -69,29 +60,16 @@ window.document.onload = function(){
     //     })
     // }
     
-    // var handleReq = function(request, sender, cb){
-    //     if(request.type === 'update'){
-    //         if(cur_index >= nodeList.length || cssSel == request.cssSelector) return;
-    //         cssSel = request.cssSelector
-    //         var pre_index = cur_index == 0 ? 0 :cur_index -1;
-    //         nodeList[cur_index].value = request.cssSelector;
-    //         nodeList[cur_index].classList.add('input-hight')
-    //         nodeList[pre_index].classList.remove('input-hight')
-    //         cur_index ++
-    //     }else if(request.type == 'host'){
-    //         host_name = request.name.replace('www.','');
-    //         chrome.runtime.sendMessage({
-    //             method:'GET',
-    //             action:'xhttp',
-    //             url:domain + 'admin/api/parser/product-selectors/' + host_name + '/'
-    //         },function(responseText){
-    //             responseObj = JSON.parse(responseText)
-    //             innerOptions(responseObj.value);
-    //             getProductAttrs(responseObj.value[0]);
-    //         })
-    //     }
-    // }
-    // chrome.runtime.onMessage.addListener(handleReq)
+    var handleReq = function(request, sender, cb){
+        if(request.type === 'update'){
+
+            if(bar.cssSel == request.cssSelector) return;
+            bar.cssSel = request.cssSelector;
+  
+            form.area.value = request.cssSelector;
+        }
+    }
+    chrome.runtime.onMessage.addListener(handleReq)
     
     // function inputInit(){
     //     nodeList = document.querySelectorAll('input.form-control');
@@ -144,6 +122,6 @@ window.document.onload = function(){
     // //host 地址只能在content.js获取，获取后并发送到bar.js。
     // chrome.runtime.sendMessage({type:'getHost'});
 
-    // var form = new bar.form();
+    var form = new bar.form();
 }
 
